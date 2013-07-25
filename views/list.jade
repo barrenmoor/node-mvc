@@ -1,0 +1,31 @@
+html(lang="en")
+  head
+    title=studentsList
+    script(src='./jquery-1.10.2.js')
+    script(type='text/javascript')
+      var init = function() {
+        $('#deleteButton').click(function() {
+          var checked = $("input[type='checkbox']:checked");
+          var toDelete = new Array();
+          for(var i = 0; i < checked.length; i++) {
+            console.log(checked[i].id);
+            toDelete[i] = checked[i].id;
+          }
+          $.ajax({
+            type : "DELETE",
+            url : "list",
+            data : {ids : toDelete}
+          }).done(function(msg) {
+            alert('Deleted: ' + msg + "\nRefresh page to see results.");
+          });
+        });
+      };
+  body(onload='init()')
+    button(id='deleteButton').
+      Delete
+    table(cellpadding='2', cellspacing='0', border='1', width="200")
+      each val, key in list.students
+        tr
+          td
+            input(type='checkbox',id='#{key}', name='#{key}')
+            td #{val.name}
